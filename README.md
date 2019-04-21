@@ -1,15 +1,14 @@
 # THPWD05 - Build a Personal Learning Journal with Flask
 
-This is the fifth project to team tree house's Python Web Tech Degree. The objective behind this project is to create a learning journal application.
+This is the fifth project to team tree house's Python Web Tech Degree.
 
-## Goals
-- Create index page that lists journal entry titles and dates.
-- Create a detail page that displays the title,date,time_spent, journal entry, and resources.
+## Goal
+- Build a learning journal application.
 
 ## Deliverables / Objectives
-1. The application adds users / edits journals.
-2. When adding or editing a journal entry, the application prompts the user for title, date, time spent, what they learned, and resources to remember.
-3. The results for these entries are stored in a database and displayed in a blog style website.
+1. Create index page that lists journal entry titles and dates.
+2. Create a detail page that displays the title,date,time_spent, journal entry, and resources.
+2. Create add and edit pages that prompts the user for title, date, time spent, what they learned, and resources to remember.
 
 ## Steps to Running/Exiting the Program
 1. Install pipenv by typing `pip install pipenv` or `pip3 install pipenv` for python3 users
