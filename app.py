@@ -34,9 +34,9 @@
 # 6. Delete Entry
 # [] Ability to delete an entry
 # 7. Styling
-# [] Each section of the journal entry uses the correct CSS from the supplied file: Entry itself, Title, Date, Time Spent, What You Learned, Resources to Remember
+# [x] Each section of the journal entry uses the correct CSS from the supplied file: Entry itself, Title, Date, Time Spent, What You Learned, Resources to Remember
 # 8. Routing
-# [] All routes are mapped correctly and use correct HTTP methods:
+# [x] All routes are mapped correctly and use correct HTTP methods:
 #     1. / and /entries
 #     2. /entries/new
 #     3. /entries/{id}
@@ -47,7 +47,7 @@
 
 from flask import (
     Flask, render_template,
-    flash, redirect, url_for, request)
+    flash, redirect, url_for, g, request)
 
 import forms
 import models
@@ -61,6 +61,7 @@ app.config['TESTING'] = True
 app.config['WTF_CSRF_ENABLED'] = True
 
 app.secret_key = 'Hello world. This part can be any random but very secret string'
+
 
 @app.route('/')
 def index():
@@ -80,7 +81,20 @@ def entry_detail(entry_id):
 
 @app.route('/entries/new', methods=('GET', 'POST'))
 def create_entry():
-    return render_template('new.html')
+    form = forms.JournalEntryForm()
+
+    if form.validate_on_submit():
+        entry_id = models.Entries.create_entry(
+            title=form.title.data.strip(),
+            date=form.date.data,
+            time_spent=form.time_spent.data,
+            learned=form.learned.data.strip(),
+            resources=form.resources.data.strip(),
+        )
+
+        return redirect(url_for('entry_detail', entry_id=entry_id))
+
+    return render_template('new.html', form=form)
 
 
 @app.route('/entries/<int:entry_id>/edit', methods=('GET', 'POST'))

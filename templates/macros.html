@@ -1,0 +1,17 @@
+{% macro render_field(field) %}
+    <div class="field">
+        {{ field.label }}
+
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <div class="notification error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if field.type == 'DateField' %}
+            {{ field(type='date', placeholder=field.label.text) }}
+        {% else %}
+            {{ field() }}
+        {% endif%}
+    </div>
+{% endmacro %}

@@ -28,16 +28,24 @@ class User(UserMixin, Model):
 
 
 class Entries(Model):
-    user = ForeignKeyField(User, related_name="author")
+    title = CharField(max_length=100)
     date = DateTimeField(default=datetime.datetime.now)
     time_spent = CharField(max_length=10)
     learned = TextField()
     resources = TextField()
-    shell = CharField(max_length=100)
-    extras = TextField()
 
     class Meta:
         database = DATABASE
+
+    @classmethod
+    def create_entry(cls, **kwargs):
+        try:
+            with DATABASE.transaction():
+                print(kwargs)
+                entry = cls.create(**kwargs)
+                return entry.id
+        except IntegrityError:
+            raise ValueError("User Already Exists")
 
 
 def initialize():
