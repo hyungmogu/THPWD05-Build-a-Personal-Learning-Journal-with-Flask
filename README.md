@@ -13,8 +13,8 @@ This is the fifth project to team tree house's Python Web Tech Degree.
 ## Steps to Running/Exiting the Program
 1. Install pipenv by typing `pip install pipenv` or `pip3 install pipenv` for python3 users
 2. In project root folder, install dependencies by typing `pipenv install`
-3. In project root folder, enter virtual environment by typing `pipenv enter`
-4. In project root folder of virtual environment, run flask by typing `FLASK_APP=app.py` and `flask run`
+3. In project root folder, enter virtual environment by typing `pipenv shell`
+4. In project root folder of virtual environment, run flask by typing `python app.py`
 5. Open chrome and enter given url (i.e. `http://0.0.0.0:5000`)
 5. Once done, exit flask by pressing `Ctrl`+`z` and virtual environment by typing `exit`
 
