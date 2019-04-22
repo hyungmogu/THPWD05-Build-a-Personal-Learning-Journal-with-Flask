@@ -14,7 +14,7 @@
 #           - pip install Flask-WTF
 #     NOTE: This will be either a requirements.txt file or a Pipfile
 # 2. Peewee Model Classes
-# [] Contains a Peewee model class for adding and editing journal entries
+# [x] Contains a Peewee model class for adding and editing journal entries
 # 3. Listing Page
 # [] List page shows journal entries where each entry displays with their respective title and date/time created
 # 4. Detail Page
@@ -46,12 +46,8 @@
 # [] The code is clean, readable, and well organized. It complies with most common PEP 8 standards of style.
 
 from flask import (
-    Flask, g, abort, render_template,
+    Flask, render_template,
     flash, redirect, url_for, request)
-from flask_bcrypt import check_password_hash
-from flask_login import (
-    LoginManager, login_user, current_user,
-    login_required, logout_user)
 
 import forms
 import models
@@ -65,14 +61,37 @@ app.config['TESTING'] = True
 app.config['WTF_CSRF_ENABLED'] = True
 
 app.secret_key = 'Hello world. This part can be any random but very secret string'
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
 
 @app.route('/')
 def index():
-    return 'hello world'
+    return render_template('index.html', entries=entries)
+
+
+@app.route('/entries')
+def entries():
+    return redirect(url_for('index'))
+
+
+@app.route('/entries/<int:entry_id>')
+def entry_detail(entry_id):
+    entry = {}
+    return render_template('detail.html', entry=entry)
+
+
+@app.route('/entries/new', methods=('GET', 'POST'))
+def create_entry():
+    return render_template('new.html')
+
+
+@app.route('/entries/<int:entry_id>/edit', methods=('GET', 'POST'))
+def edit_entry(entry_id):
+    entry = {}
+    return render_template('edit.html', entry=entry)
+
+
+@app.route('/entries/<int:entry_id>/delete')
+def delete_entry(entry_id):
+    return 'this is delete {0}'.format(entry_id)
 
 
 if __name__ == '__main__':
