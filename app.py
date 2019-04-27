@@ -132,8 +132,6 @@ def delete_entry(entry_id):
     return redirect(url_for('index'))
 
 
-
-
 if __name__ == '__main__':
     models.initialize()
     app.run(debug=DEBUG, host=HOST, port=PORT)
