@@ -18,7 +18,7 @@
 # 3. Listing Page
 # [] List page shows journal entries where each entry displays with their respective title and date/time created
 # 4. Detail Page
-# [] Detail page shows:
+# [x] Detail page shows:
 #     1. Title
 #     2. Date
 #     3. Time Spent
@@ -47,7 +47,7 @@
 
 from flask import (
     Flask, render_template,
-    flash, redirect, url_for, g, request)
+    flash, redirect, url_for, g, request, abort)
 
 import forms
 import models
@@ -63,6 +63,11 @@ app.config['WTF_CSRF_ENABLED'] = True
 app.secret_key = 'Hello world. This part can be any random but very secret string'
 
 
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html'), 404
+
+
 @app.route('/')
 def index():
     return render_template('index.html', entries=entries)
@@ -75,7 +80,16 @@ def entries():
 
 @app.route('/entries/<int:entry_id>')
 def entry_detail(entry_id):
-    entry = {}
+    entry = None
+
+    # Fetch entry by id
+    try:
+        entry = models.Entries.select().where(
+            models.Entries.id == int(entry_id)
+        ).get()
+    except models.DoesNotExist:
+        abort(404)
+
     return render_template('detail.html', entry=entry)
 
 
@@ -84,6 +98,7 @@ def create_entry():
     form = forms.JournalEntryForm()
 
     if form.validate_on_submit():
+
         entry_id = models.Entries.create_entry(
             title=form.title.data.strip(),
             date=form.date.data,
@@ -105,7 +120,18 @@ def edit_entry(entry_id):
 
 @app.route('/entries/<int:entry_id>/delete')
 def delete_entry(entry_id):
-    return 'this is delete {0}'.format(entry_id)
+    # Fetch entry by id
+    try:
+        entry = models.Entries.get(models.Entries.id == int(entry_id))
+        entry.delete()
+        flash("Entry has been deleted successfully")
+    except models.DoesNotExist:
+        # if entry is none, then flash a message
+        flash("Entry doesn't exist")
+
+    return redirect(url_for('index'))
+
+
 
 
 if __name__ == '__main__':
