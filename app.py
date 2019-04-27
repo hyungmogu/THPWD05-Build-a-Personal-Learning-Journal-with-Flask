@@ -25,7 +25,7 @@
 #     4. What You Learned
 #     5. Resources to Remember
 # 5. Add/Edit Page
-# [] Add/Edit page enables the user to post new entries or edit existing entries with all of the following fields:
+# [x] Add/Edit page enables the user to post new entries or edit existing entries with all of the following fields:
 #     1. Title
 #     2. Date
 #     3. Time Spent
@@ -114,8 +114,41 @@ def create_entry():
 
 @app.route('/entries/<int:entry_id>/edit', methods=('GET', 'POST'))
 def edit_entry(entry_id):
-    entry = {}
-    return render_template('edit.html', entry=entry)
+    entry = None
+
+    form = forms.JournalEntryForm()
+
+    try:
+        entry = models.Entries.select().where(
+            models.Entries.id == int(entry_id)
+        ).get()
+    except models.DoesNotExist:
+        abort(404)
+
+    # Fetch entry by id
+    if request.method == 'GET':
+        form.title.data = entry.title
+        form.date.data = entry.date
+        form.time_spent.data = entry.time_spent
+        form.learned.data = entry.learned
+        form.resources.data = entry.resources
+
+    else:
+        # If information is valid, then update data
+        if form.validate_on_submit():
+            entry.title = form.title.data.strip()
+            entry.date = form.date.data
+            entry.time_spent = form.time_spent.data
+            entry.learned = form.learned.data.strip()
+            entry.resources = form.resources.data.strip()
+            entry.save()
+
+            flash("Update is successful")
+
+            # if update is successful, return to detail page
+            return redirect(url_for('entry_detail', entry_id=entry_id))
+
+    return render_template('edit.html', form=form, entry_id=entry_id)
 
 
 @app.route('/entries/<int:entry_id>/delete')
