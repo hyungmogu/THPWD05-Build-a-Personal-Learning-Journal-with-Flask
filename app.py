@@ -159,7 +159,8 @@ def delete_entry(entry_id):
     # Fetch entry by id
     try:
         entry = models.Entries.get(models.Entries.id == int(entry_id))
-        entry.delete()
+        entry.delete_instance()
+        entry.save()
         flash("Entry has been deleted successfully")
     except models.DoesNotExist:
         # if entry is none, then flash a message
