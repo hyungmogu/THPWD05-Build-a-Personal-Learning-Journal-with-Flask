@@ -16,7 +16,7 @@
 # 2. Peewee Model Classes
 # [x] Contains a Peewee model class for adding and editing journal entries
 # 3. Listing Page
-# [] List page shows journal entries where each entry displays with their respective title and date/time created
+# [x] List page shows journal entries where each entry displays with their respective title and date/time created
 # 4. Detail Page
 # [x] Detail page shows:
 #     1. Title
@@ -70,6 +70,9 @@ def not_found(error):
 
 @app.route('/')
 def index():
+    # get all entries
+    entries = models.Entries.select()
+    # with all entries, feed it to index.html under entries keyword
     return render_template('index.html', entries=entries)
 
 
