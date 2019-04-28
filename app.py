@@ -32,7 +32,7 @@
 #     4. What You Learned
 #     5. Resources to Remember
 # 6. Delete Entry
-# [] Ability to delete an entry
+# [x] Ability to delete an entry
 # 7. Styling
 # [x] Each section of the journal entry uses the correct CSS from the supplied file: Entry itself, Title, Date, Time Spent, What You Learned, Resources to Remember
 # 8. Routing
@@ -43,7 +43,7 @@
 #     4. /entries/{id}/edit
 #     5. /entries/{id}/delete
 # 9. Python Coding Style
-# [] The code is clean, readable, and well organized. It complies with most common PEP 8 standards of style.
+# [x] The code is clean, readable, and well organized. It complies with most common PEP 8 standards of style.
 
 from flask import (
     Flask, render_template,
